@@ -14,9 +14,9 @@
     - { name: 'smbclient'}
     - { name: 'winbind'}
     - { name: 'acl'}
-    - { name: 'attr'}
     - { name: 'fam'}
     - { name: 'libpam-winbind'}
     - { name: 'libpam-krb5'}
     - { name: 'libnss-winbind'}
     - { name: 'ldb-tools'}
+    - { name: 'openssh-server'}

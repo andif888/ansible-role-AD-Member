@@ -40,11 +40,12 @@
   command: /usr/bin/net ads testjoin
   register: testjoin
   changed_when: false
+  ignore_errors: yes
 
 - name: Join AD with Samba
   command: /usr/bin/net ads join -U "{{ adauth_username }}"%"{{ adauth_password }}"
   notify: restart krb5
-  when: "'Join is OK' not in testjoin.stdout"
+  when: "(ansible_connection != 'local') and ('Join is OK' not in testjoin.stdout)"
 
 - name: Add AD group to sudoers
   lineinfile:
