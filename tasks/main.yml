@@ -1,0 +1,63 @@
+---
+# tasks file for ansible-role-AD-Member
+
+- name: Include OS-specific tasks.  
+  include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Add ntp servers
+  lineinfile:
+    path: /etc/ntp.conf
+    line: 'server {{ item.name }}'
+  with_items: "{{ NTP_SERVERS }}"
+  
+- name: Config krb5.conf
+  template:
+    src: krb5.conf.j2
+    dest: /etc/krb5.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart krb5
+
+- name: Config nsswitch.conf
+  template:
+    src: nsswitch.conf.j2
+    dest: /etc/nsswitch.conf
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Config smb.conf
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart smbd
+
+- name: Check domain join status
+  command: /usr/bin/net ads testjoin
+  register: testjoin
+  changed_when: false
+
+- name: Join AD with Samba
+  command: /usr/bin/net ads join -U "{{ adauth_username }}"%"{{ adauth_password }}"
+  notify: restart krb5
+  when: "'Join is OK' not in testjoin.stdout"
+
+- name: Add AD group to sudoers
+  lineinfile:
+    path: /etc/sudoers
+    line: '%{{ AD_GROUP_IN_SUDOERS }}   ALL=(ALL:ALL) ALL'
+
+- name: Add AllowGroups to sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: 'AllowGroups {{ SSH_ALLOW_GROUPS }}'
+  notify: restart ssh
+
+- name: Create HomeDirs for AD users on logon
+  lineinfile:
+    path: /etc/pam.d/common-session
+    line: 'session    required    pam_mkhomedir.so skel=/etc/skel/ umask=0022'

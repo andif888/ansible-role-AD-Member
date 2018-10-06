@@ -1,0 +1,22 @@
+---
+- name: Update apt cache.
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: Ensure packages are installed on Debian.
+  apt: 
+    name: "{{ item.name }}"
+    state: present
+  with_items:
+    - { name: 'ntp'}
+    - { name: 'krb5-user'}
+    - { name: 'samba'}
+    - { name: 'cifs-utils'}
+    - { name: 'smbclient'}
+    - { name: 'winbind'}
+    - { name: 'acl'}
+    - { name: 'attr'}
+    - { name: 'fam'}
+    - { name: 'libpam-winbind'}
+    - { name: 'libpam-krb5'}
+    - { name: 'libnss-winbind'}
+    - { name: 'ldb-tools'}

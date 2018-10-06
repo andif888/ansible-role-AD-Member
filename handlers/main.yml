@@ -1,0 +1,26 @@
+---
+# handlers file for ansible-role-AD-Member
+
+- name: restart winbind
+  service: 
+    name: winbind
+    state: restarted
+  listen: "restart krb5"
+
+- name: restart nmbd
+  service: 
+    name: nmbd
+    state: restarted
+  listen: "restart krb5"
+  
+- name: restart smbd
+  service: 
+    name: smbd
+    state: restarted
+  listen: "restart krb5"
+
+- name: restart ssh
+  service: 
+    name: ssh
+    state: restarted
+

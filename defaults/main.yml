@@ -1,0 +1,23 @@
+---
+# defaults file for ansible-role-AD-Member
+
+NTP_SERVERS:
+  - { name: '192.168.2.20'}
+  - { name: '172.23.200.39'}
+
+adauth_username: administrator
+adauth_password: blah blah
+
+KRB5_DOMAIN_NAME: prianto.com
+KRB5_DOMAIN_SHORTNAME: prianto
+KRB5_KDC_SERVERLIST: 
+  - { name: 'mucdc01.prianto.com' }
+  - { name: 'rzdc01.prianto.com' }
+
+SMB_PASSWORD_SERVER: '192.168.2.20'
+# SMB_SHARES:
+#   - { name: 'share', path: '/srv/tier5/samba/share/', valid_users: '@PRIANTO\dfs_it', force_group: 'dfs_it' }
+
+AD_GROUP_IN_SUDOERS: 'linux_sudoers'
+
+SSH_ALLOW_GROUPS: 'root linux_sudoers'

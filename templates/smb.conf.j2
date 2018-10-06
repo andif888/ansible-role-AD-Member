@@ -1,0 +1,40 @@
+[global]
+
+        security = ads
+        realm = {{ KRB5_DOMAIN_NAME }}
+        password server = {{ SMB_PASSWORD_SERVER }}
+        workgroup = {{ KRB5_DOMAIN_SHORTNAME|upper }}
+#       winbind separator = +
+        idmap uid = 10000-20000
+        idmap gid = 10000-20000
+        winbind enum users = yes
+        winbind enum groups = yes
+        template homedir = /home/%D/%U
+        template shell = /bin/bash
+        client use spnego = yes
+        client ntlmv2 auth = yes
+        encrypt passwords = yes
+        winbind use default domain = yes
+        restrict anonymous = 2
+        domain master = no
+        local master = no
+        preferred master = no
+        os level = 0
+
+{% if SMB_SHARES is defined %}
+{% for share in SMB_SHARES: %}
+[{{ share.name }}]
+        comment = Share
+        path = {{ share.path }}
+        valid users = {{ share.valid_users }}
+        force group = {{ share.force_group }}
+        writable = yes
+        read only = no
+        force create mode = 0660
+        create mask = 0777
+        directory mask = 0777
+        force directory mode = 0770
+        access based share enum = yes
+        hide unreadable = yes
+{% endfor %}
+{% endif %}
