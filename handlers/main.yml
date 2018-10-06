@@ -6,6 +6,7 @@
     name: winbind
     state: restarted
   listen: "restart krb5"
+  when: "ansible_connection != 'local'"
 
 - name: restart nmbd
   service: 
