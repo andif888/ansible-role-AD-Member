@@ -65,31 +65,32 @@ SMB_IDMAP_GID: 10000-20000
 ``` 
 
 
-### Resolve AD logon issues after UID and GID changes
+Resolve AD logon issues after UID and GID changes
+--------------
 
 Stop the Winbind and Samba services:
 
-```console
+```bash
 service winbind stop
 service smbd stop
 ```
 
 Clear the Samba Net cache:
 
-```console
+```bash
 net cache flush
 ```
 
 Delete the Winbind caches:
 
-```console
+```bash
 rm -f /var/lib/samba/*.tdb
 rm -f /var/lib/samba/group_mapping.ldb
 ```
 
 Start the Samba and then Winbind services - Note: The order is important
 
-```console
+```bash
 service smbd start
 service winbind start
 ``` 
