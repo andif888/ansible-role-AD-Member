@@ -62,8 +62,8 @@ ID mapping range of AD user and groups to linux uid and gid.
 ```yaml
 SMB_IDMAP_UID: 10000-20000
 SMB_IDMAP_GID: 10000-20000
-``` 
-
+```
+ 
 
 Resolve AD logon issues after UID and GID changes
 --------------
