@@ -85,7 +85,6 @@ Delete the Winbind caches:
 
 ```bash
 rm -f /var/lib/samba/*.tdb
-rm -f /var/lib/samba/group_mapping.ldb
 ```
 
 Start the Samba and then Winbind services - Note: The order is important
@@ -93,7 +92,7 @@ Start the Samba and then Winbind services - Note: The order is important
 ```bash
 service smbd start
 service winbind start
-``` 
+```
 
 
 Example Playbook
