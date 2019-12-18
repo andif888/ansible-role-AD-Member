@@ -5,8 +5,8 @@
         password server = {{ SMB_PASSWORD_SERVER }}
         workgroup = {{ KRB5_DOMAIN_SHORTNAME|upper }}
 #       winbind separator = +
-        idmap uid = 10000-20000
-        idmap gid = 10000-20000
+        idmap uid = {{ SMB_IDMAP_UID }}
+        idmap gid = {{ SMB_IDMAP_UID }}
         winbind enum users = yes
         winbind enum groups = yes
         template homedir = /home/%D/%U

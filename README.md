@@ -57,6 +57,42 @@ SSH_ALLOW_GROUPS: 'root linux_sudoers'
 ```
 Space separated list of group names, which are allowed to logon using ssh
 
+ID mapping range of AD user and groups to linux uid and gid.
+
+```yaml
+SMB_IDMAP_UID: 10000-20000
+SMB_IDMAP_GID: 10000-20000
+``` 
+
+
+### Resolve AD logon issues after UID and GID changes
+
+Stop the Winbind and Samba services:
+
+```console
+service winbind stop
+service smbd stop
+```
+
+Clear the Samba Net cache:
+
+```console
+net cache flush
+```
+
+Delete the Winbind caches:
+
+```console
+rm -f /var/lib/samba/*.tdb
+rm -f /var/lib/samba/group_mapping.ldb
+```
+
+Start the Samba and then Winbind services - Note: The order is important
+
+```console
+service smbd start
+service winbind start
+``` 
 
 
 Example Playbook
